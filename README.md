@@ -1,56 +1,77 @@
-# 🚀 FastAPI CRUD Application
+# 🚀 FastAPI Blog CRUD API
 
-A simple **CRUD (Create, Read, Update, Delete)** REST API built using **FastAPI**.
-This project demonstrates how to build a backend API with request validation, database integration, and RESTful endpoints.
+A **FastAPI-based Blog CRUD application** with **JWT authentication**, **user management**, and **database integration** using SQLAlchemy.
+
+This project demonstrates a clean backend architecture with separated **routers**, **repository layer**, and **authentication system**.
 
 ---
 
 ## 📌 Features
 
-✅ Create new records
-✅ Read all records or single record
-✅ Update existing records
-✅ Delete records
-✅ Request validation using Pydantic
-✅ Database integration (SQLAlchemy)
-✅ Interactive API docs (Swagger UI)
+✅ User registration and login
+✅ JWT token authentication
+✅ Password hashing (secure storage)
+✅ Blog CRUD operations
+✅ Protected routes with OAuth2
+✅ SQLAlchemy ORM integration
+✅ SQLite database
+✅ Modular project structure
+✅ Interactive API documentation (Swagger UI)
 
 ---
 
 ## 🛠 Tech Stack
 
-* FastAPI
 * Python
+* FastAPI
 * SQLAlchemy
 * Pydantic
+* Passlib (bcrypt)
+* JWT Authentication
 * Uvicorn
-* SQLite / MySQL / PostgreSQL (configure as needed)
+* SQLite
 
 ---
 
 ## 📂 Project Structure
 
 ```
-project/
+FASTAPI TUTORIAL/
 │
-├── main.py              # FastAPI app entry point
-├── database.py          # Database connection setup
-├── models.py            # SQLAlchemy models
-├── schemas.py           # Pydantic schemas
-├── crud.py              # CRUD operations
-├── requirements.txt     # Dependencies
-└── README.md
+├── blog/
+│   │
+│   ├── repository/           # Database logic (CRUD operations)
+│   │   ├── blog.py
+│   │   └── user.py
+│   │
+│   ├── routers/              # API route handlers
+│   │   ├── authentication.py
+│   │   ├── blog.py
+│   │   └── user.py
+│   │
+│   ├── database.py           # Database connection
+│   ├── models.py             # SQLAlchemy models
+│   ├── schema.py             # Pydantic schemas
+│   ├── hashing.py            # Password hashing logic
+│   ├── oauth2.py             # OAuth2 dependency
+│   ├── token.py              # JWT token creation/verification
+│   ├── main.py               # FastAPI app entry
+│   └── blog.db               # SQLite database
+│
+├── requirements.txt          # Project dependencies
+├── main.py                   # Root app runner (if used)
+└── .gitignore
 ```
 
 ---
 
 ## ⚙️ Installation
 
-### 1️⃣ Clone repository
+### 1️⃣ Clone the repository
 
 ```
-git clone https://github.com/yourusername/fastapi-crud-app.git
-cd fastapi-crud-app
+git clone https://github.com/yourusername/fastapi-blog-crud.git
+cd fastapi-blog-crud
 ```
 
 ---
@@ -58,21 +79,21 @@ cd fastapi-crud-app
 ### 2️⃣ Create virtual environment
 
 ```
-python -m venv venv
+python -m venv blog-env
 ```
 
 Activate environment:
 
-Windows:
+**Windows**
 
 ```
-venv\Scripts\activate
+blog-env\Scripts\activate
 ```
 
-Mac/Linux:
+**Mac/Linux**
 
 ```
-source venv/bin/activate
+source blog-env/bin/activate
 ```
 
 ---
@@ -88,7 +109,7 @@ pip install -r requirements.txt
 ## ▶️ Run the Application
 
 ```
-uvicorn main:app --reload
+uvicorn blog.main:app --reload
 ```
 
 Server will start at:
@@ -115,25 +136,50 @@ http://127.0.0.1:8000/redoc
 
 ---
 
-## 🔗 API Endpoints Example
+## 🔐 Authentication Flow
 
-| Method | Endpoint    | Description    |
-| ------ | ----------- | -------------- |
-| POST   | /items      | Create item    |
-| GET    | /items      | Get all items  |
-| GET    | /items/{id} | Get item by ID |
-| PUT    | /items/{id} | Update item    |
-| DELETE | /items/{id} | Delete item    |
+1. Register a user
+2. Login using credentials
+3. Receive JWT access token
+4. Use token in headers:
+
+```
+Authorization: Bearer <your_token>
+```
+
+5. Access protected routes
 
 ---
 
-## 🧪 Example Request (POST)
+## 🔗 API Endpoints
+
+### 🔑 Authentication
+
+| Method | Endpoint | Description   |
+| ------ | -------- | ------------- |
+| POST   | /login   | User login    |
+| POST   | /user    | Register user |
+
+---
+
+### 📝 Blog
+
+| Method | Endpoint   | Description    |
+| ------ | ---------- | -------------- |
+| POST   | /blog      | Create blog    |
+| GET    | /blog      | Get all blogs  |
+| GET    | /blog/{id} | Get blog by ID |
+| PUT    | /blog/{id} | Update blog    |
+| DELETE | /blog/{id} | Delete blog    |
+
+---
+
+## 🧪 Example Login Request
 
 ```
 {
-  "name": "Laptop",
-  "price": 50000,
-  "description": "Gaming laptop"
+  "username": "test@gmail.com",
+  "password": "1234"
 }
 ```
 
@@ -148,16 +194,19 @@ fastapi
 uvicorn
 sqlalchemy
 pydantic
+passlib[bcrypt]
+python-jose
 ```
 
 ---
 
 ## 🚀 Future Improvements
 
-* JWT Authentication
-* User roles & permissions
+* Refresh tokens
+* Role-based access control
 * Pagination
 * Docker deployment
+* PostgreSQL integration
 * Unit testing
 * CI/CD pipeline
 
@@ -165,8 +214,7 @@ pydantic
 
 ## 👨‍💻 Author
 
-Your Name
-GitHub: https://github.com/yourusername
+Atharva Thipse
 
 ---
 
